@@ -3,12 +3,12 @@ entries:
   satunol-runtime-bundle:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2021-06-02T12:25:10.285865702+07:00"
+    created: "2021-06-02T13:23:57.107748765+07:00"
     description: A Helm chart for Kubernetes
     digest: 91756ee68749ba7a0c86505192ed19bade50e03ab9e6d4bc87708bfbce2aa6c5
     name: satunol-runtime-bundle
     type: application
     urls:
-    - https://bitbucket.org/aeowlian/satunol-helm-repo/src/master/satunol-runtime-bundle-0.1.0.tgz
+    - https://raw.githubusercontent.com/jy006/satunol-helm-repo/master/satunol-runtime-bundle-0.1.0.tgz
     version: 0.1.0
-generated: "2021-06-02T12:25:10.285045887+07:00"
+generated: "2021-06-02T13:23:57.106937211+07:00"
