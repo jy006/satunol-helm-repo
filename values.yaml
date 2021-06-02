@@ -1,0 +1,87 @@
+# Default values for satunol-runtime-bundle.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+global:
+  # global.registryPullSecrets -- Configure pull secrets for all deployments
+  registryPullSecrets: []
+  # global.extraEnv -- Use Yaml formatted string to add extra environment properties to all deployments, i.e.
+  extraEnv: ""
+  gateway:
+    # global.gateway.domain -- Set to configure gateway domain template, i.e. {{ .Release.Namespace }}.1.3.4.5.nip.io
+    # $ helm upgrade aae . --install --set global.gateway.domain=1.2.3.4.nip.io
+    domain: "DOMAIN"
+    # global.gateway.host -- Set to configure single host domain name for all services
+    host: 'gateway-{{ .Release.Namespace }}.{{ template "common.gateway-domain" . }}'
+    # host: '{{ template "common.gateway-domain" . }}'
+    # global.gateway.http -- Set to false enables HTTPS configuration on all urls
+    http: "true"
+    # global.gateway.tlsacme -- Set to enable automatic TLS for ingress if https is enabled
+    tlsacme: "false"
+    # domain: ""
+    # global.gateway.annotations -- Configure global annotations for all service ingresses
+    annotations:
+    #   certmanager.k8s.io/issuer: letsencrypt-prod
+  keycloak:
+    # global.keycloak.host -- Configure Keycloak host template
+    host: 'identity-{{ .Release.Namespace }}.{{ template "common.gateway-domain" . }}'
+    #host: '{{ template "common.gateway-host" . }}'
+    # global.keycloak.url -- Set full url to configure external Keycloak, otherwise will be generated based on host
+    url: ""
+    # global.keycloak.realm -- Configure Keycloak realm
+    realm: "activiti"
+    # global.keycloak.resource -- Configure Keycloak resource
+    resource: "activiti"
+  rabbitmq:
+    host: "rabbitmq"
+    username: guest
+    password: guest
+
+nameOverride: runtime-bundle
+service:
+  type: ClusterIP
+  port: 80
+  name: rb
+javaOpts:
+  xmx: 2048m
+  xms: 512m
+image:
+  repository: aeowlian/satunol-runtime-bundle
+  tag: 0.9.4
+  pullPolicy: Always
+  pullSecrets:
+    - privat-registry
+ingress:
+  path: /rb
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-headers: Authorization, Content-Type, Accept
+postgresql:
+  enabled: true
+rabbitmq:
+  enabled: true
+resources:
+  limits:
+    cpu: "2"
+    memory: 2048Mi
+  requests:
+    cpu: 200m
+    memory: 512Mi
+probePath: '{{ tpl .Values.ingress.path . }}/actuator/health'
+extraEnv: |-
+  - name: SERVER_SERVLET_CONTEXTPATH
+    value: "{{ tpl .Values.ingress.path . }}"
+  - name: SERVER_USEFORWARDHEADERS
+    value: "true"
+  - name: SERVER_TOMCAT_INTERNALPROXIES
+    value: ".*"
+serviceAccount:
+  create: false
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 1
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80

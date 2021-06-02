@@ -1,0 +1,12 @@
+apiVersion: v1
+data:
+  .dockerconfigjson: ewoJImF1dGhzIjogewoJCSJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOiB7CgkJCSJhdXRoIjogIllXVnZkMnhwWVc0NmVUTm9aWHByTVdWcyIKCQl9Cgl9Cn0=
+kind: Secret
+metadata:
+  creationTimestamp: "2021-05-31T06:05:14Z"
+  name: privat-registry
+  namespace: default
+  resourceVersion: "826605"
+  selfLink: /api/v1/namespaces/default/secrets/privat-registry
+  uid: 89ea4d53-577e-4b6a-b535-3bb9e22cd7f3
+type: kubernetes.io/dockerconfigjson
