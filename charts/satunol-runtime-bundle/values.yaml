@@ -48,7 +48,7 @@ javaOpts:
   xms: 512m
 image:
   repository: aeowlian/satunol-runtime-bundle
-  tag: 0.9.5
+  tag: 0.9.6
   pullPolicy: Always
   pullSecrets:
     - privat-registry
